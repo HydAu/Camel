@@ -16,6 +16,7 @@
  */
 package org.apache.camel.component.salesforce;
 
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
@@ -26,6 +27,8 @@ import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.HttpClientTransport;
 import org.eclipse.jetty.client.HttpConversation;
 import org.eclipse.jetty.client.HttpRequest;
+import org.eclipse.jetty.client.ProtocolHandler;
+import org.eclipse.jetty.client.ProtocolHandlers;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
@@ -73,7 +76,22 @@ public class SalesforceHttpClient extends HttpClient {
         if (getSession() == null) {
             throw new IllegalStateException("Missing SalesforceSession in property session!");
         }
-        getProtocolHandlers().add(new SalesforceSecurityHandler(this));
+
+        // brilliant jetty you keep breaking your apis in 9.x - a round of golf clap for you!
+        // in 9.3 onwards its called put, and the add method is removed
+        ProtocolHandlers handlers = getProtocolHandlers();
+        Method method = null;
+        try {
+            // is there a put method?
+            method = handlers.getClass().getMethod("put", ProtocolHandler.class);
+        } catch (Throwable e) {
+            method = handlers.getClass().getMethod("add", ProtocolHandler.class);
+        }
+        if (method != null) {
+            method.invoke(handlers, new SalesforceSecurityHandler(this));
+        } else {
+            throw new IllegalStateException("You need Jetty 9.2 or better on the classpath.");
+        }
         super.doStart();
     }
 

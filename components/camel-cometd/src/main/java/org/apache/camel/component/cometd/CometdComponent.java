@@ -352,7 +352,7 @@ public class CometdComponent extends UriEndpointComponent {
      * a pre-configured {@link SSLContext}.
      */
     private static final class CometdComponentSslContextFactory extends SslContextFactory {
-        @Override
+
         public void checkKeyStore() {
         }
     }

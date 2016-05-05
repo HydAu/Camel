@@ -80,6 +80,10 @@ public class SalesforceSecurityHandler implements ProtocolHandler {
             && (retries == null || retries <= maxAuthenticationRetries);
     }
 
+    public String getName() {
+        return "SalesforceSecurityHandler";
+    }
+
     @Override
     public Response.Listener getResponseListener() {
         return new SecurityListener(maxContentLength);
