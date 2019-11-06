@@ -374,7 +374,7 @@
     <lucene3-bundle-version>3.6.0_1</lucene3-bundle-version>
     <lucene3-version>3.6.0</lucene3-version>
     <lucene-bundle-version>5.5.0_1</lucene-bundle-version>
-    <lucene-version>5.5.0</lucene-version>
+    <lucene-version>8.3.0</lucene-version>
     <lucene-version-range>[5,6)</lucene-version-range>
     <lightcouch-version>0.1.8</lightcouch-version>
     <lightcouch-gson-version>2.3.1</lightcouch-gson-version>
